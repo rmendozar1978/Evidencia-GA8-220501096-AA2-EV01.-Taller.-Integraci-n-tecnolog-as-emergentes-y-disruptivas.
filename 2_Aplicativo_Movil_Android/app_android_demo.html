@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Interactivo de Arquitectura Android - SENA GA8-220501096-AA2-EV01</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --android-green: #3DDC84;
+            --android-navy: #073042;
+            --sena-green: #39A900;
+            --primary-purple: #6200EE;
+            --phone-bg: #F5F7FA;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #E2E8F0;
+            color: #1E293B;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Smartphone Bezel */
+        .phone-frame {
+            width: 380px;
+            height: 760px;
+            background: #111827;
+            border-radius: 44px;
+            padding: 14px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 6px #374151;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .phone-speaker {
+            width: 70px;
+            height: 5px;
+            background: #4B5563;
+            border-radius: 4px;
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .phone-camera {
+            width: 10px;
+            height: 10px;
+            background: #1F2937;
+            border: 2px solid #374151;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 35%;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--phone-bg);
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 32px;
+            background: #4A148C;
+            color: #FFF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            height: 52px;
+            background: #6200EE;
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        /* Bottom Navigation within phone */
+        .phone-tabs {
+            height: 50px;
+            background: #FFF;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .phone-tab-btn {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #64748B;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .phone-tab-btn.active {
+            color: #6200EE;
+            font-weight: 700;
+        }
+
+        .phone-tab-btn .material-icons {
+            font-size: 20px;
+        }
+
+        /* Screen Content Scrollable */
+        .screen-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* Android Controls Styling */
+        .android-btn {
+            background: #6200EE;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+            margin-bottom: 12px;
+        }
+        .android-btn:hover { background: #5000CA; }
+        .android-btn.green-btn { background: #39A900; }
+        .android-btn.green-btn:hover { background: #2E8600; }
+
+        .android-input {
+            width: 100%;
+            padding: 10px 8px;
+            border: none;
+            border-bottom: 2px solid #6200EE;
+            background: transparent;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+        }
+
+        .android-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #CBD5E1;
+            border-radius: 4px;
+            background: white;
+            font-size: 13px;
+            margin-bottom: 14px;
+            outline: none;
+        }
+
+        .android-card {
+            background: white;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .android-list-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .android-list-item:hover { background: #F8FAFC; }
+
+        /* Toast Simulation */
+        .android-toast {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(33, 33, 33, 0.92);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        /* Panel Lateral Informativo */
+        .info-panel {
+            flex: 1;
+            min-width: 320px;
+            max-width: 650px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .info-panel h2 {
+            font-size: 20px;
+            color: #0F172A;
+            margin-bottom: 15px;
+            border-left: 4px solid #39A900;
+            padding-left: 10px;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: #EBF8E6;
+            color: #2E8600;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .code-box {
+            background: #0F172A;
+            color: #E2E8F0;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+
+    <!-- SIMULADOR SMARTPHONE ANDROID -->
+    <div class="phone-frame">
+        <div class="phone-speaker"></div>
+        <div class="phone-camera"></div>
+
+        <div class="phone-screen">
+            <!-- Barra de estado -->
+            <div class="status-bar">
+                <span>11:00</span>
+                <span><i class="material-icons" style="font-size: 12px; vertical-align: middle;">wifi</i> <i class="material-icons" style="font-size: 12px; vertical-align: middle;">signal_cellular_alt</i> <i class="material-icons" style="font-size: 12px; vertical-align: middle;">battery_std</i></span>
+            </div>
+
+            <!-- Barra de aplicación -->
+            <div class="action-bar">
+                <span id="screen-title">Layouts & Controles</span>
+                <i class="material-icons" style="cursor: pointer;" onclick="mostrarToast('Menú SENA ADSO')">more_vert</i>
+            </div>
+
+            <!-- Contenido Dinámico según pestaña -->
+            <div class="screen-content" id="screen-container">
+                <!-- VISTA 1: CONTROLES BÁSICOS (Por defecto) -->
+                <div id="view-controles">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <h4 style="color: #6200EE; font-size: 16px; font-weight: bold;">Control de Texto Android</h4>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" alt="Andy Android" style="width: 70px; margin: 8px 0;">
+                    </div>
+
+                    <div class="android-card">
+                        <label style="font-size: 11px; color: #6200EE; font-weight: bold;">EditText (Pág 35 PDF 2)</label>
+                        <input type="text" id="input-nombre" class="android-input" placeholder="Escriba su Nombre" value="Aprendiz SENA">
+                        
+                        <button class="android-btn green-btn" onclick="ejecutarBotonClick()">
+                            <i class="material-icons" style="font-size: 14px; vertical-align: middle;">touch_app</i> Hacer Clic (btnclic)
+                        </button>
+                    </div>
+
+                    <div class="android-card">
+                        <label style="font-size: 11px; font-weight: bold;">CheckBox & RadioGroup (Pág 36-39)</label>
+                        <div style="margin: 8px 0; font-size: 13px;">
+                            <label><input type="checkbox" id="chk-es" checked onchange="mostrarToast('Español: ' + this.checked)"> Español</label> &nbsp;
+                            <label><input type="checkbox" id="chk-en" onchange="mostrarToast('Inglés: ' + this.checked)"> Inglés</label>
+                        </div>
+                        <div style="font-size: 13px;">
+                            <label><input type="radio" name="genero" value="Femenino" checked onchange="mostrarToast('Género: Femenino')"> Femenino</label> &nbsp;
+                            <label><input type="radio" name="genero" value="Masculino" onchange="mostrarToast('Género: Masculino')"> Masculino</label>
+                        </div>
+                    </div>
+
+                    <div class="android-card">
+                        <label style="font-size: 11px; font-weight: bold;">Spinner Ciudades (Pág 41-43)</label>
+                        <select id="spinner-ciudades" class="android-select" onchange="seleccionarCiudadSpinner(this.value)">
+                            <option value="Popayán">Popayán (Sede Cauca)</option>
+                            <option value="Cali">Cali (Sede Valle)</option>
+                            <option value="Bogotá">Bogotá (Dirección General)</option>
+                            <option value="Cartagena">Cartagena (Bolívar)</option>
+                            <option value="Medellín">Medellín (Antioquia)</option>
+                            <option value="Pasto">Pasto (Nariño)</option>
+                        </select>
+                    </div>
+
+                    <div class="android-card">
+                        <label style="font-size: 11px; font-weight: bold;">ListView Ciudades (Pág 43-45)</label>
+                        <div style="border: 1px solid #E2E8F0; border-radius: 4px; max-height: 120px; overflow-y: auto;">
+                            <div class="android-list-item" onclick="mostrarToast('ListView: Popayán')"><span>Popayán</span> <i class="material-icons" style="font-size: 14px; color: #94A3B8;">chevron_right</i></div>
+                            <div class="android-list-item" onclick="mostrarToast('ListView: Cali')"><span>Cali</span> <i class="material-icons" style="font-size: 14px; color: #94A3B8;">chevron_right</i></div>
+                            <div class="android-list-item" onclick="mostrarToast('ListView: Bogotá')"><span>Bogotá</span> <i class="material-icons" style="font-size: 14px; color: #94A3B8;">chevron_right</i></div>
+                            <div class="android-list-item" onclick="mostrarToast('ListView: Medellín')"><span>Medellín</span> <i class="material-icons" style="font-size: 14px; color: #94A3B8;">chevron_right</i></div>
+                            <div class="android-list-item" onclick="mostrarToast('ListView: Pasto')"><span>Pasto</span> <i class="material-icons" style="font-size: 14px; color: #94A3B8;">chevron_right</i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA 2: NAVEGACIÓN INTENTS -->
+                <div id="view-intents" style="display: none;">
+                    <div class="android-card">
+                        <h4 style="font-size: 14px; color: #0284C7; margin-bottom: 8px;">Intent Explícito (Pág 51 PDF 2)</h4>
+                        <p style="font-size: 12px; color: #64748B; margin-bottom: 12px;">Comunica dos actividades dentro de la misma app con paso de parámetros:</p>
+                        <button class="android-btn" style="background: #0284C7;" onclick="simularIntentExplicito()">
+                            startActivity(new Intent(A.this, B.class))
+                        </button>
+                    </div>
+
+                    <div class="android-card">
+                        <h4 style="font-size: 14px; color: #0F172A; margin-bottom: 8px;">Intent Implícito (Pág 52-53 PDF 2)</h4>
+                        <p style="font-size: 12px; color: #64748B; margin-bottom: 12px;">Invoca servicios del sistema operativo (Navegador Web / Teléfono):</p>
+                        <button class="android-btn" style="background: #0F172A;" onclick="simularIntentImplicito()">
+                            Intent.ACTION_VIEW (Abrir SENA Zajuna)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VISTA 3: PERSISTENCIA SQLITE -->
+                <div id="view-sqlite" style="display: none;">
+                    <div class="android-card">
+                        <h4 style="font-size: 14px; color: #39A900; margin-bottom: 8px;">Base de Datos SQLite (Pág 56-57)</h4>
+                        <input type="number" id="sql-cedula" class="android-input" placeholder="Cédula (Clave Primaria)" value="10023456">
+                        <input type="text" id="sql-nombre" class="android-input" placeholder="Nombre de Usuario" value="Carlos Pérez">
+                        <input type="text" id="sql-telefono" class="android-input" placeholder="Teléfono" value="3125559090">
+                        
+                        <div style="display: flex; gap: 8px; margin-top: 5px;">
+                            <button class="android-btn green-btn" style="flex: 1;" onclick="sqliteInsert()">db.insert</button>
+                            <button class="android-btn" style="background: #0284C7; flex: 1;" onclick="sqliteQuery()">db.query</button>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="android-btn" style="background: #D97706; flex: 1;" onclick="sqliteUpdate()">db.update</button>
+                            <button class="android-btn" style="background: #DC2626; flex: 1;" onclick="sqliteDelete()">db.delete</button>
+                        </div>
+                    </div>
+
+                    <div class="android-card">
+                        <label style="font-size: 11px; font-weight: bold;">Registros en <code>administracion.db</code>:</label>
+                        <div id="sqlite-table-view" style="font-size: 12px; margin-top: 8px; max-height: 110px; overflow-y: auto;">
+                            <!-- Registros -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA 4: MULTIMEDIA -->
+                <div id="view-multimedia" style="display: none;">
+                    <div class="android-card">
+                        <h4 style="font-size: 14px; color: #6200EE; margin-bottom: 8px;">MediaPlayer (Audio) (Pág 63-65)</h4>
+                        <p style="font-size: 12px; color: #64748B; margin-bottom: 10px;">Reproducción asíncrona de recursos locales en <code>res/raw/</code>:</p>
+                        <button class="android-btn" onclick="reproducirBeep()">
+                            <i class="material-icons" style="font-size: 14px; vertical-align: middle;">play_arrow</i> cancion.start()
+                        </button>
+                    </div>
+
+                    <div class="android-card">
+                        <h4 style="font-size: 14px; color: #0284C7; margin-bottom: 8px;">VideoView (Pág 65-67)</h4>
+                        <div style="background: #000; border-radius: 6px; height: 130px; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <span id="video-sim-status" style="color: white; font-size: 12px;">VideoView Pausado</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <button class="android-btn" style="background: #0284C7; flex: 1;" onclick="toggleVideoSim()">Play / Pause</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Botones inferiores de navegación -->
+            <div class="phone-tabs">
+                <button class="phone-tab-btn active" id="tab-controles" onclick="cambiarPestana('controles', 'Layouts & Controles')">
+                    <i class="material-icons">widgets</i>Controles
+                </button>
+                <button class="phone-tab-btn" id="tab-intents" onclick="cambiarPestana('intents', 'Navegación Intents')">
+                    <i class="material-icons">navigation</i>Intents
+                </button>
+                <button class="phone-tab-btn" id="tab-sqlite" onclick="cambiarPestana('sqlite', 'Persistencia SQLite')">
+                    <i class="material-icons">storage</i>SQLite
+                </button>
+                <button class="phone-tab-btn" id="tab-multimedia" onclick="cambiarPestana('multimedia', 'Módulo Multimedia')">
+                    <i class="material-icons">movie</i>Media
+                </button>
+            </div>
+
+            <!-- Toast Flotante -->
+            <div class="android-toast" id="phone-toast">Mensaje Toast</div>
+        </div>
+    </div>
+
+    <!-- PANEL INFORMATIVO Y CÓDIGO NATIVO -->
+    <div class="info-panel">
+        <span class="feature-badge">EVIDENCIA SENA GA8-220501096-AA2-EV01</span>
+        <h2>Simulador Oficial de Arquitectura Android</h2>
+        <p style="font-size: 14px; line-height: 1.6; margin-bottom: 15px;">
+            Este simulador interactivo ejecuta en tiempo real los componentes solicitados en el material de formación <strong>"Construir aplicativo según las características de la arquitectura Android"</strong> (72 páginas) y refleja la implementación del proyecto formativo <strong>ShieldTube</strong>.
+        </p>
+
+        <h3 style="font-size: 15px; color: #0284C7; margin-bottom: 10px;">Módulos Implementados e Interactivos:</h3>
+        <ul style="font-size: 13.5px; margin-left: 20px; line-height: 1.7; margin-bottom: 20px;">
+            <li><strong>Jerarquía de Vistas:</strong> LinearLayout (Vertical/Horizontal), TableLayout con filas y celdas combinadas (<code>android:layout_span="2"</code>) y ConstraintLayout.</li>
+            <li><strong>Event Listeners:</strong> <code>setOnClickListener</code> en Buttons, <code>setOnItemSelectedListener</code> en Spinner de ciudades, y <code>setOnItemClickListener</code> en ListView.</li>
+            <li><strong>Navegación:</strong> Intents explícitos para paso de datos entre clases e implícitos para servicios web externos.</li>
+            <li><strong>Persistencia Local:</strong> Operaciones CRUD mediante SQLiteOpenHelper (<code>administracion.db</code>).</li>
+            <li><strong>Multimedia:</strong> Integración de APIs <code>MediaPlayer</code> y <code>VideoView</code>.</li>
+        </ul>
+
+        <div class="code-box">
+// Fragmento Java Oficial: Implementación del Listener (Pág 50 PDF 2)
+btnclic.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(MainActivity.this, 
+            "¡Acción ejecutada correctamente!", 
+            Toast.LENGTH_SHORT).show();
+    }
+});
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Toast Simulator
+    let toastTimeout;
+    function mostrarToast(mensaje) {
+        const toast = document.getElementById('phone-toast');
+        toast.textContent = mensaje;
+        toast.style.opacity = '1';
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2200);
+    }
+
+    // Pestañas del teléfono
+    function cambiarPestana(vistaId, titulo) {
+        document.getElementById('screen-title').textContent = titulo;
+        
+        ['controles', 'intents', 'sqlite', 'multimedia'].forEach(id => {
+            document.getElementById('view-' + id).style.display = (id === vistaId) ? 'block' : 'none';
+            document.getElementById('tab-' + id).classList.toggle('active', id === vistaId);
+        });
+    }
+
+    // Botón Clic
+    let clickCount = 0;
+    function ejecutarBotonClick() {
+        clickCount++;
+        const nombre = document.getElementById('input-nombre').value || "Aprendiz SENA";
+        mostrarToast(`¡Hola, ${nombre}! Clic #${clickCount} procesado`);
+    }
+
+    function seleccionarCiudadSpinner(ciudad) {
+        mostrarToast(`Spinner: Ciudad seleccionada -> ${ciudad}`);
+    }
+
+    function simularIntentExplicito() {
+        mostrarToast("Intent Explícito: Navegando a DetalleActivity.class...");
+    }
+
+    function simularIntentImplicito() {
+        mostrarToast("Intent Implícito: Abriendo navegador web con ACTION_VIEW...");
+        window.open('https://zajuna.sena.edu.co', '_blank');
+    }
+
+    // Simulación SQLite
+    let dbUsuarios = [
+        { cedula: 10023456, nombre: "Carlos Pérez", telefono: "3125559090" },
+        { cedula: 98765432, nombre: "María Isabel", telefono: "3104448822" }
+    ];
+
+    function renderSQLite() {
+        const container = document.getElementById('sqlite-table-view');
+        if (dbUsuarios.length === 0) {
+            container.innerHTML = '<span style="color:#94A3B8;">Base de datos vacía.</span>';
+            return;
+        }
+        container.innerHTML = dbUsuarios.map(u => 
+            `<div style="padding:4px 0; border-bottom:1px dashed #CBD5E1;">
+                <strong>CC: ${u.cedula}</strong> | ${u.nombre} (${u.telefono})
+             </div>`
+        ).join('');
+    }
+
+    function sqliteInsert() {
+        const cedula = Number(document.getElementById('sql-cedula').value);
+        const nombre = document.getElementById('sql-nombre').value;
+        const telefono = document.getElementById('sql-telefono').value;
+        if (!cedula || !nombre) {
+            mostrarToast("Error: Ingresa cédula y nombre");
+            return;
+        }
+        if (dbUsuarios.find(u => u.cedula === cedula)) {
+            mostrarToast("Error: La cédula ya existe (Primary Key)");
+            return;
+        }
+        dbUsuarios.push({ cedula, nombre, telefono });
+        renderSQLite();
+        mostrarToast("db.insert: Usuario registrado exitosamente");
+    }
+
+    function sqliteQuery() {
+        const cedula = Number(document.getElementById('sql-cedula').value);
+        const u = dbUsuarios.find(item => item.cedula === cedula);
+        if (u) {
+            document.getElementById('sql-nombre').value = u.nombre;
+            document.getElementById('sql-telefono').value = u.telefono;
+            mostrarToast("db.rawQuery: Usuario encontrado -> " + u.nombre);
+        } else {
+            mostrarToast("db.rawQuery: No existe registro con esa cédula");
+        }
+    }
+
+    function sqliteUpdate() {
+        const cedula = Number(document.getElementById('sql-cedula').value);
+        const idx = dbUsuarios.findIndex(u => u.cedula === cedula);
+        if (idx !== -1) {
+            dbUsuarios[idx].nombre = document.getElementById('sql-nombre').value;
+            dbUsuarios[idx].telefono = document.getElementById('sql-telefono').value;
+            renderSQLite();
+            mostrarToast("db.update: Registro actualizado con éxito");
+        } else {
+            mostrarToast("db.update: Cédula no encontrada");
+        }
+    }
+
+    function sqliteDelete() {
+        const cedula = Number(document.getElementById('sql-cedula').value);
+        const initial = dbUsuarios.length;
+        dbUsuarios = dbUsuarios.filter(u => u.cedula !== cedula);
+        if (dbUsuarios.length < initial) {
+            renderSQLite();
+            mostrarToast("db.delete: Registro eliminado de la base de datos");
+        } else {
+            mostrarToast("db.delete: Cédula no encontrada");
+        }
+    }
+
+    // Audio síntesis Web Audio API
+    function reproducirBeep() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Re5
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.25);
+            mostrarToast("MediaPlayer: cancion.start() reproduciendo sonido");
+        } catch(e) {
+            mostrarToast("MediaPlayer activo");
+        }
+    }
+
+    // Video Simulator
+    let isPlaying = false;
+    function toggleVideoSim() {
+        isPlaying = !isPlaying;
+        const status = document.getElementById('video-sim-status');
+        status.textContent = isPlaying ? "▶ Reproduciendo VideoView (video.mp4)" : "⏸ VideoView Pausado";
+        mostrarToast(isPlaying ? "videoView.start()" : "videoView.pause()");
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderSQLite();
+    });
+</script>
+
+</body>
+</html>

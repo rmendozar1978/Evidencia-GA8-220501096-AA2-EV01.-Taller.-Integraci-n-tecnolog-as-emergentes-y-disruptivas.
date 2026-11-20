@@ -1,0 +1,22 @@
+{
+  "name": "gestion-empleados-backend",
+  "version": "1.0.0",
+  "description": "API REST para gestión de empleados - Evidencia SENA GA8-220501096-AA2-EV01",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": ["sena", "mean", "api-rest", "node", "express", "mongodb"],
+  "author": "Aprendiz SENA ADSO",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

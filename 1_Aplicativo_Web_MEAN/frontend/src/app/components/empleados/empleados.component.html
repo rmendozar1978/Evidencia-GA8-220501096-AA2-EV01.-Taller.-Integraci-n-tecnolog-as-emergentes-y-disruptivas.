@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="row">
+        <!-- Formulario de Empleados (Lado Izquierdo) -->
+        <div class="col s12 m5">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Registro de Empleado</span>
+                    <form #empleadoForm="ngForm" (ngSubmit)="agregarEmpleado(empleadoForm)">
+                        <input type="hidden" name="_id" [(ngModel)]="empleadoService.selectedEmpleado._id">
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" name="name" #name="ngModel" [(ngModel)]="empleadoService.selectedEmpleado.name" placeholder="Ingrese su nombre" required>
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="text" name="position" #position="ngModel" [(ngModel)]="empleadoService.selectedEmpleado.position" placeholder="Ingrese su cargo" required>
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="text" name="office" #office="ngModel" [(ngModel)]="empleadoService.selectedEmpleado.office" placeholder="Ingrese su lugar de trabajo" required>
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="number" name="salary" #salary="ngModel" [(ngModel)]="empleadoService.selectedEmpleado.salary" placeholder="Ingrese su salario" required>
+                            </div>
+                            <div class="card-action">
+                                <div class="input-field col s12">
+                                    <button class="btn right grey lighten-1 black-text" type="button" (click)="resetForm(empleadoForm)">Limpiar</button>
+                                    <button class="btn blue darken-2" type="submit">Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Empleados (Lado Derecho) -->
+        <div class="col s12 m7">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Lista de Empleados en MongoDB</span>
+                    <table class="striped responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Sede</th>
+                                <th>Salario</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let emp of empleadoService.empleados">
+                                <td>{{ emp.name }}</td>
+                                <td>{{ emp.position }}</td>
+                                <td>{{ emp.office }}</td>
+                                <td>${{ emp.salary }}</td>
+                                <td>
+                                    <a (click)="editarEmpleado(emp)" style="cursor: pointer; margin-right: 15px;">
+                                        <i class="material-icons blue-text">edit</i>
+                                    </a>
+                                    <a (click)="eliminarEmpleado(emp._id)" style="cursor: pointer;">
+                                        <i class="material-icons red-text">delete</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

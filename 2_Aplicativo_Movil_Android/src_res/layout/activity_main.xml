@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout Principal Integrador - SENA GA8-220501096-AA2-EV01 -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- 1. SECCIÓN TEXTO E IMAGEN (Págs 29-33 PDF 2) -->
+        <TextView
+            android:id="@+id/txtTexto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/control_de_texto"
+            android:textStyle="bold"
+            android:textColor="#6200EE"
+            android:textSize="22sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp" />
+
+        <ImageView
+            android:id="@+id/imgAndy"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_launcher_foreground"
+            android:scaleType="centerInside" />
+
+        <!-- 2. CAMPO DE TEXTO EDITTEXT (Pág 35 PDF 2) -->
+        <EditText
+            android:id="@+id/txtNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Escriba su Nombre"
+            android:inputType="textPersonName"
+            android:layout_marginTop="16dp" />
+
+        <!-- 3. BOTÓN CON LISTENER (Pág 47-50 PDF 2) -->
+        <Button
+            android:id="@+id/btnclic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/click"
+            android:backgroundTint="#39A900" />
+
+        <!-- 4. CHECKBOXES (Pág 36-37 PDF 2) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selección de Idiomas:"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <CheckBox
+            android:id="@+id/chkEspanol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/espa_ol"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/chkIngles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ingles"
+            android:checked="false" />
+
+        <!-- 5. RADIOBUTTONS EN RADIOGROUP (Pág 38-40 PDF 2) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Género:"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <RadioGroup
+            android:id="@+id/rg1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/femenino"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rb2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/masculino"
+                android:checked="false"
+                android:layout_marginStart="20dp" />
+        </RadioGroup>
+
+        <!-- 6. SPINNER DESPLEGABLE (Pág 41-43 PDF 2) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Ciudad (Spinner):"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <Spinner
+            android:id="@+id/spCiudades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/ciudades"
+            android:layout_marginTop="8dp" />
+
+        <!-- 7. LISTVIEW (Pág 43-45 PDF 2) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Listado Fijo (ListView):"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <ListView
+            android:id="@+id/listaCiudades"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:entries="@array/ciudades"
+            android:layout_marginTop="8dp" />
+
+        <!-- 8. NAVEGACIÓN INTENTS (Pág 51-53 PDF 2) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Intent Explícito"
+                android:onClick="abrirSegundaPantalla"
+                android:backgroundTint="#0284C7" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Intent Implícito"
+                android:onClick="abrirNavegadorWeb"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="#0F172A" />
+        </LinearLayout>
+
+        <!-- 9. MULTIMEDIA (Pág 63-66 PDF 2) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Módulo Multimedia:"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reproducir Sonido (MediaPlayer)"
+            android:onClick="reproducirSonido"
+            android:layout_marginTop="6dp" />
+
+        <VideoView
+            android:id="@+id/videoview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+</ScrollView>

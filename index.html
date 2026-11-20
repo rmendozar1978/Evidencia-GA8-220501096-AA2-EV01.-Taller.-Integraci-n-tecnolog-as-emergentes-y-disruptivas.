@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Entrega y Presentación - SENA GA8-220501096-AA2-EV01</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --sena-green: #39A900;
+            --sena-dark: #1E6600;
+            --primary-navy: #0F172A;
+            --bg-page: #F8FAFC;
+            --card-border: #E2E8F0;
+            --accent-blue: #0284C7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-page);
+            color: #1E293B;
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* Hero Header */
+        .hero {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: white;
+            padding: 50px 30px 40px;
+            text-align: center;
+            border-bottom: 4px solid var(--sena-green);
+        }
+
+        .sena-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(57, 169, 0, 0.2);
+            color: #4ADE80;
+            border: 1px solid rgba(57, 169, 0, 0.4);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #94A3B8;
+            max-width: 750px;
+            margin: 0 auto 25px;
+        }
+
+        .zip-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--sena-green);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(57, 169, 0, 0.4);
+            transition: all 0.2s;
+        }
+        .zip-button:hover {
+            background: var(--sena-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(57, 169, 0, 0.5);
+        }
+
+        /* Grid de Módulos */
+        .main-container {
+            max-width: 1100px;
+            margin: -25px auto 0;
+            padding: 0 20px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .module-card {
+            background: white;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #CBD5E1;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .icon-green { background: #39A900; }
+        .icon-blue { background: #0284C7; }
+        .icon-purple { background: #7C3AED; }
+        .icon-orange { background: #EA580C; }
+
+        .module-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .module-desc {
+            font-size: 14px;
+            color: #64748B;
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #0F172A;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1E293B;
+        }
+
+        .btn-secondary {
+            background: #F1F5F9;
+            color: #334155;
+            border: 1px solid #CBD5E1;
+        }
+        .btn-secondary:hover {
+            background: #E2E8F0;
+        }
+
+        /* Sección de Enlaces Oficiales Verificados */
+        .links-section {
+            background: white;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .links-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 8px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+        }
+        .link-item:hover {
+            border-color: var(--sena-green);
+            background: #F0FDF4;
+        }
+
+        .link-item .material-icons {
+            color: var(--sena-green);
+            font-size: 22px;
+            margin-top: 2px;
+        }
+
+        .link-item strong {
+            display: block;
+            font-size: 14px;
+            color: #0F172A;
+            margin-bottom: 2px;
+        }
+
+        .link-item span {
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 13px;
+            color: #94A3B8;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO HEADER -->
+    <header class="hero">
+        <div class="sena-pill">
+            <i class="material-icons" style="font-size: 16px;">verified</i>
+            SERVICIO NACIONAL DE APRENDIZAJE - SENA
+        </div>
+        <h1>Evidencia GA8-220501096-AA2-EV01<br>Taller: Integración, Tecnologías Emergentes y Disruptivas</h1>
+        <p>Programa de Formación: Tecnología en Análisis y Desarrollo de Software (ADSO) | Fase 3: Ejecución</p>
+        
+        <a href="PROYECTO_EVIDENCIA_GA8-220501096-AA2-EV01.zip" class="zip-button" download>
+            <i class="material-icons">archive</i> Descargar Carpeta Completa (.ZIP)
+        </a>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="main-container">
+        
+        <!-- GRID DE APLICATIVOS Y MÓDULOS -->
+        <div class="modules-grid">
+
+            <!-- 1. PRESENTACIÓN DE SUSTENTACIÓN -->
+            <div class="module-card">
+                <div>
+                    <div class="module-header">
+                        <div class="icon-circle icon-orange">
+                            <i class="material-icons">slideshow</i>
+                        </div>
+                        <div>
+                            <div class="module-title">Diapositivas de Sustentación</div>
+                            <span style="font-size: 12px; color: #EA580C; font-weight: 600;">Modo Exposición</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Presentación interactiva completa con 8 diapositivas dinámicas para defender y exponer el proyecto ante el instructor. Incluye atajos de teclado y modo pantalla completa.
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <a href="4_Presentacion_Diapositivas/presentacion_sustentacion.html" target="_blank" class="btn-action btn-primary">
+                        <i class="material-icons" style="font-size: 16px;">play_arrow</i> Iniciar Presentación
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. APLICATIVO WEB MEAN -->
+            <div class="module-card">
+                <div>
+                    <div class="module-header">
+                        <div class="icon-circle icon-blue">
+                            <i class="material-icons">web</i>
+                        </div>
+                        <div>
+                            <div class="module-title">Aplicativo Web MEAN</div>
+                            <span style="font-size: 12px; color: #0284C7; font-weight: 600;">Front-End & REST API</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Aplicación interactiva de <strong>Gestión de Empleados</strong> con Materialize CSS, formulario reactivo, notificaciones Toast, operaciones CRUD en tiempo real y emulador de peticiones Postman.
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <a href="2_Aplicativo_Web_MEAN/app_web_empleados.html" target="_blank" class="btn-action btn-primary">
+                        <i class="material-icons" style="font-size: 16px;">launch</i> Probar App Web
+                    </a>
+                    <a href="2_Aplicativo_Web_MEAN/backend/index.js" target="_blank" class="btn-action btn-secondary">
+                        <i class="material-icons" style="font-size: 16px;">code</i> Código Node
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. APLICATIVO MÓVIL ANDROID -->
+            <div class="module-card">
+                <div>
+                    <div class="module-header">
+                        <div class="icon-circle icon-green">
+                            <i class="material-icons">smartphone</i>
+                        </div>
+                        <div>
+                            <div class="module-title">Simulador Móvil Android</div>
+                            <span style="font-size: 12px; color: #16A34A; font-weight: 600;">Arquitectura & Controles</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Simulador interactivo del aplicativo nativo Android. Ejecuta botones con listeners, selector de ciudades (Spinner/ListView), persistencia con SQLite y reproductor MediaPlayer/VideoView.
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <a href="3_Aplicativo_Movil_Android/app_android_demo.html" target="_blank" class="btn-action btn-primary">
+                        <i class="material-icons" style="font-size: 16px;">phone_android</i> Abrir Simulador
+                    </a>
+                    <a href="3_Aplicativo_Movil_Android/src_java/com/senacauca/estructuraproyecto/MainActivity.java" target="_blank" class="btn-action btn-secondary">
+                        <i class="material-icons" style="font-size: 16px;">code</i> Código Java
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. DOCUMENTO DEL TALLER (INFORME TÉCNICO) -->
+            <div class="module-card">
+                <div>
+                    <div class="module-header">
+                        <div class="icon-circle icon-purple">
+                            <i class="material-icons">article</i>
+                        </div>
+                        <div>
+                            <div class="module-title">Documento Oficial del Taller</div>
+                            <span style="font-size: 12px; color: #7C3AED; font-weight: 600;">Normas APA 7.ª Edición</span>
+                        </div>
+                    </div>
+                    <p class="module-desc">
+                        Informe académico exhaustivo con portada institucional, marco teórico profundo, matriz comparativa de tecnologías emergentes, análisis del proyecto ShieldTube y referencias bibliográficas.
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <a href="1_Documentacion_Taller/Taller_Integracion_Tecnologias_Emergentes.html" target="_blank" class="btn-action btn-primary">
+                        <i class="material-icons" style="font-size: 16px;">visibility</i> Ver Informe
+                    </a>
+                    <a href="1_Documentacion_Taller/Taller_Integracion_Tecnologias_Emergentes.doc" class="btn-action btn-secondary" download>
+                        <i class="material-icons" style="font-size: 16px;">description</i> Word (.doc)
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN DE ENLACES OFICIALES VERIFICADOS Y FUNCIONALES -->
+        <section class="links-section">
+            <h3><i class="material-icons" style="color: #39A900;">link</i> Directorio de Enlaces y Recursos Oficiales Verificados</h3>
+            <p style="font-size: 14px; color: #64748B;">Todos los enlaces externos solicitados y citados en los tres componentes formativos del SENA han sido probados y validados:</p>
+
+            <div class="links-grid">
+                <a href="https://gitlab.com/jonathanga/gestion-empleados" target="_blank" class="link-item">
+                    <i class="material-icons">code</i>
+                    <div>
+                        <strong>Repositorio GitLab (Gestión Empleados)</strong>
+                        <span>gitlab.com/jonathanga/gestion-empleados (Pág 55 PDF 1)</span>
+                    </div>
+                </a>
+
+                <a href="https://developer.android.com/docs" target="_blank" class="link-item">
+                    <i class="material-icons">menu_book</i>
+                    <div>
+                        <strong>Documentación Oficial de Android</strong>
+                        <span>developer.android.com/docs (Pág 71 PDF 2)</span>
+                    </div>
+                </a>
+
+                <a href="https://materializecss.com/getting-started.html" target="_blank" class="link-item">
+                    <i class="material-icons">palette</i>
+                    <div>
+                        <strong>Documentación de Materialize CSS</strong>
+                        <span>materializecss.com/getting-started.html (Pág 55 PDF 1)</span>
+                    </div>
+                </a>
+
+                <a href="https://bitcoin.org/files/bitcoin-paper/bitcoin_es.pdf" target="_blank" class="link-item">
+                    <i class="material-icons">currency_bitcoin</i>
+                    <div>
+                        <strong>Whitepaper Bitcoin (Satoshi Nakamoto)</strong>
+                        <span>bitcoin.org/bitcoin_es.pdf (Pág 34 PDF 3)</span>
+                    </div>
+                </a>
+
+                <a href="https://www.ibm.com/topics/blockchain" target="_blank" class="link-item">
+                    <i class="material-icons">business</i>
+                    <div>
+                        <strong>IBM Blockchain Solutions & Food Trust</strong>
+                        <span>ibm.com/topics/blockchain (Pág 32 PDF 3)</span>
+                    </div>
+                </a>
+
+                <a href="https://zajuna.sena.edu.co" target="_blank" class="link-item">
+                    <i class="material-icons">school</i>
+                    <div>
+                        <strong>Plataforma SENA Zajuna LMS</strong>
+                        <span>zajuna.sena.edu.co (Entrega de Evidencias)</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Servicio Nacional de Aprendizaje (SENA) | Tecnología en Análisis y Desarrollo de Software (ADSO)</p>
+        <p>Evidencia GA8-220501096-AA2-EV01: Taller acerca de integración, tecnologías emergentes y disruptivas</p>
+    </footer>
+
+</body>
+</html>

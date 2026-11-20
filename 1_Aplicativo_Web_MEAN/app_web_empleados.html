@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Gestión de Empleados - MEAN Stack (SENA GA8-220501096-AA2-EV01)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Materialize CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        }
+        nav .brand-logo {
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 1.5rem;
+        }
+        .main-container {
+            margin-top: 35px;
+            margin-bottom: 50px;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+        .card-title {
+            font-weight: 600 !important;
+            font-size: 1.25rem !important;
+            color: #1565c0;
+            margin-bottom: 20px !important;
+        }
+        .btn-action {
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        .btn-action:hover {
+            transform: scale(1.15);
+        }
+        .api-terminal {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .json-key { color: #9cdcfe; }
+        .json-string { color: #ce9178; }
+        .json-number { color: #b5cea8; }
+        .badge-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR IDENTICO AL PDF 1 (PÁG 35) -->
+    <nav class="nav-wrapper blue darken-2">
+        <div class="container">
+            <a href="#" class="brand-logo"><i class="material-icons left">people</i>GESTIÓN DE EMPLEADOS</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><span class="badge white-text green darken-1" style="margin-top: 18px; border-radius: 4px;">Arquitectura MEAN Activa</span></li>
+                <li><a href="#api-tester"><i class="material-icons left">http</i>Simulador REST API</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="container main-container">
+        
+        <!-- ENCABEZADO DIDÁCTICO -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel white" style="border-left: 5px solid #1565c0; padding: 15px 20px;">
+                    <span class="grey-text text-darken-3">
+                        <strong>Evidencia GA8-220501096-AA2-EV01 | Componente Formativo: Construcción aplicación web</strong><br>
+                        Este módulo interactivo ejecuta el Front-End (Angular/Materialize) y simula el Back-End (Node.js + Express + MongoDB) con persistencia local y soporte para servidor local en <code>http://localhost:3000/api/empleados</code>.
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- FORMULARIO DE EMPLEADOS (PÁG 45-46 PDF 1) -->
+            <div class="col s12 m5">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title" id="form-title">
+                            <i class="material-icons left">person_add</i>Registrar Empleado
+                        </span>
+
+                        <form id="empleadoForm" onsubmit="guardarEmpleado(event)">
+                            <input type="hidden" id="emp_id">
+
+                            <div class="row" style="margin-bottom: 0;">
+                                <div class="input-field col s12">
+                                    <input type="text" id="name" placeholder="Ingrese su nombre" required>
+                                    <label for="name" class="active">Nombre Completo</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input type="text" id="position" placeholder="Ingrese su cargo" required>
+                                    <label for="position" class="active">Cargo / Posición</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input type="text" id="office" placeholder="Ingrese su lugar de trabajo" required>
+                                    <label for="office" class="active">Lugar de Trabajo / Sede</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input type="number" id="salary" placeholder="0" value="0" required>
+                                    <label for="salary" class="active">Salario Mensual ($ USD/COP)</label>
+                                </div>
+                            </div>
+
+                            <div class="card-action" style="padding: 15px 0 0 0; border-top: 1px solid #e0e0e0; margin-top: 10px;">
+                                <button type="button" class="btn right grey lighten-2 black-text waves-effect" onclick="limpiarFormulario()">
+                                    <i class="material-icons left">clear</i>Limpiar
+                                </button>
+                                <button type="submit" class="btn blue darken-2 waves-effect waves-light" id="btn-submit">
+                                    <i class="material-icons left">save</i>Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE EMPLEADOS EN TIEMPO REAL (PÁG 50-52 PDF 1) -->
+            <div class="col s12 m7">
+                <div class="card">
+                    <div class="card-content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <span class="card-title" style="margin-bottom: 0;">
+                                <i class="material-icons left">storage</i>Colección MongoDB: <code>empleados</code>
+                            </span>
+                            <span class="badge blue white-text" id="total-count">0 registros</span>
+                        </div>
+
+                        <table class="striped highlight responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cargo</th>
+                                    <th>Sede</th>
+                                    <th>Salario</th>
+                                    <th style="text-align: center;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-empleados-body">
+                                <!-- Se llena dinámicamente con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIMULADOR INTERACTIVO DE API REST / POSTMAN (PÁG 24-25 PDF 1) -->
+        <div class="row" id="api-tester">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title"><i class="material-icons left">send</i>Consola Interactiva API REST (Emulador Postman)</span>
+                        <p class="grey-text" style="margin-bottom: 15px;">Prueba las rutas del servidor configuradas en <code>empleado.routes.js</code> con respuestas JSON en tiempo real:</p>
+                        
+                        <div style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn green darken-2 waves-effect" onclick="probarAPI('GET')">
+                                <span class="badge-status green white-text" style="margin-right: 5px;">GET</span> /api/empleados
+                            </button>
+                            <button class="btn blue darken-2 waves-effect" onclick="probarAPI('POST')">
+                                <span class="badge-status blue white-text" style="margin-right: 5px;">POST</span> /api/empleados
+                            </button>
+                            <button class="btn orange darken-2 waves-effect" onclick="probarAPI('PUT')">
+                                <span class="badge-status orange white-text" style="margin-right: 5px;">PUT</span> /api/empleados/:id
+                            </button>
+                            <button class="btn red darken-2 waves-effect" onclick="probarAPI('DELETE')">
+                                <span class="badge-status red white-text" style="margin-right: 5px;">DELETE</span> /api/empleados/:id
+                            </button>
+                        </div>
+
+                        <div class="api-terminal" id="api-response-viewer">
+// Salida de la consola API REST (Formato JSON)
+// Haz clic en uno de los botones superiores para ejecutar una petición HTTP...
+{
+  "status": "API REST funcionando",
+  "servidor": "http://localhost:3000/api/empleados",
+  "mensaje": "Listo para recibir y enviar datos en formato JSON"
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Materialize JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        // Datos iniciales tomados directamente de la guía oficial del SENA (Págs 25, 51 y 52)
+        const EMPLEADOS_INICIALES = [
+            { _id: "60d0247523be55b04809fa48", name: "Santiago", position: "Experto", office: "Colombia", salary: 1000 },
+            { _id: "60d64392eadf31b1d99e64f4", name: "María Isabel", position: "Instructora", office: "Cali", salary: 3000 },
+            { _id: "60d2aeaa21a176987f0157485", name: "Julian", position: "Ingeniero", office: "Cali", salary: 5000 },
+            { _id: "60d2aeaa21a176987f0157489", name: "Jaime", position: "Oficial", office: "Juzgados", salary: 8000 }
+        ];
+
+        // Obtener datos de localStorage o usar iniciales
+        function getStoredEmpleados() {
+            const data = localStorage.getItem('sena_empleados_mean');
+            if (!data) {
+                localStorage.setItem('sena_empleados_mean', JSON.stringify(EMPLEADOS_INICIALES));
+                return EMPLEADOS_INICIALES;
+            }
+            return JSON.parse(data);
+        }
+
+        function setStoredEmpleados(arr) {
+            localStorage.setItem('sena_empleados_mean', JSON.stringify(arr));
+        }
+
+        // Renderizar tabla
+        function renderTabla() {
+            const empleados = getStoredEmpleados();
+            const tbody = document.getElementById('tabla-empleados-body');
+            tbody.innerHTML = '';
+
+            document.getElementById('total-count').textContent = empleados.length + ' registros';
+
+            if (empleados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="center-align grey-text">No hay empleados registrados. Agrega uno nuevo en el formulario.</td></tr>';
+                return;
+            }
+
+            empleados.forEach(emp => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${emp.name}</strong></td>
+                    <td>${emp.position}</td>
+                    <td><span class="chip">${emp.office}</span></td>
+                    <td>$${Number(emp.salary).toLocaleString()}</td>
+                    <td style="text-align: center;">
+                        <a onclick="cargarParaEditar('${emp._id}')" class="btn-action blue-text" title="Editar">
+                            <i class="material-icons">edit</i>
+                        </a>
+                        <a onclick="eliminarEmpleado('${emp._id}')" class="btn-action red-text" title="Eliminar" style="margin-left: 12px;">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Guardar o Actualizar
+        function guardarEmpleado(e) {
+            e.preventDefault();
+            const id = document.getElementById('emp_id').value;
+            const name = document.getElementById('name').value.trim();
+            const position = document.getElementById('position').value.trim();
+            const office = document.getElementById('office').value.trim();
+            const salary = Number(document.getElementById('salary').value);
+
+            let empleados = getStoredEmpleados();
+
+            if (id) {
+                // Editar existente
+                const index = empleados.findIndex(item => item._id === id);
+                if (index !== -1) {
+                    empleados[index] = { _id: id, name, position, office, salary };
+                    setStoredEmpleados(empleados);
+                    // Toast de Materialize tal como en PDF 1
+                    M.toast({ html: 'Empleado Actualizado', classes: 'blue darken-2' });
+                }
+            } else {
+                // Crear nuevo
+                const nuevoId = "60d" + Math.random().toString(16).substring(2, 10) + Date.now().toString(16).substring(0, 14);
+                const nuevoEmp = { _id: nuevoId, name, position, office, salary };
+                empleados.push(nuevoEmp);
+                setStoredEmpleados(empleados);
+                // Toast de Materialize tal como en PDF 1 (Pág 43 y 50)
+                M.toast({ html: 'Guardado satisfactoriamente', classes: 'green darken-2' });
+            }
+
+            limpiarFormulario();
+            renderTabla();
+        }
+
+        // Cargar datos en el formulario para editar
+        function cargarParaEditar(id) {
+            const empleados = getStoredEmpleados();
+            const emp = empleados.find(item => item._id === id);
+            if (emp) {
+                document.getElementById('emp_id').value = emp._id;
+                document.getElementById('name').value = emp.name;
+                document.getElementById('position').value = emp.position;
+                document.getElementById('office').value = emp.office;
+                document.getElementById('salary').value = emp.salary;
+                document.getElementById('form-title').innerHTML = '<i class="material-icons left">edit</i>Editar Empleado';
+                document.getElementById('btn-submit').innerHTML = '<i class="material-icons left">update</i>Actualizar';
+                M.updateTextFields();
+            }
+        }
+
+        // Eliminar empleado
+        function eliminarEmpleado(id) {
+            if (confirm('¿Está seguro de eliminar este registro de empleado?')) {
+                let empleados = getStoredEmpleados();
+                empleados = empleados.filter(item => item._id !== id);
+                setStoredEmpleados(empleados);
+                M.toast({ html: 'Empleado Eliminado', classes: 'red darken-2' });
+                limpiarFormulario();
+                renderTabla();
+            }
+        }
+
+        // Limpiar formulario (resetForm Pág 43 PDF 1)
+        function limpiarFormulario() {
+            document.getElementById('empleadoForm').reset();
+            document.getElementById('emp_id').value = '';
+            document.getElementById('salary').value = 0;
+            document.getElementById('form-title').innerHTML = '<i class="material-icons left">person_add</i>Registrar Empleado';
+            document.getElementById('btn-submit').innerHTML = '<i class="material-icons left">save</i>Guardar';
+            M.updateTextFields();
+        }
+
+        // Simulador de API REST (Postman)
+        function probarAPI(metodo) {
+            const viewer = document.getElementById('api-response-viewer');
+            const empleados = getStoredEmpleados();
+
+            let respuesta = {};
+            const timestamp = new Date().toISOString();
+
+            if (metodo === 'GET') {
+                respuesta = {
+                    metodo: "GET",
+                    endpoint: "http://localhost:3000/api/empleados",
+                    status_code: 200,
+                    status_text: "OK",
+                    fecha: timestamp,
+                    total: empleados.length,
+                    data: empleados
+                };
+            } else if (metodo === 'POST') {
+                const nuevo = {
+                    _id: "60d" + Math.random().toString(16).substring(2, 10) + "postman",
+                    name: "Prueba Postman",
+                    position: "Desarrollador Fullstack",
+                    office: "Virtual SENA",
+                    salary: 4200
+                };
+                respuesta = {
+                    metodo: "POST",
+                    endpoint: "http://localhost:3000/api/empleados",
+                    status_code: 201,
+                    status_text: "Created",
+                    fecha: timestamp,
+                    status: "Empleado guardado",
+                    registro_creado: nuevo
+                };
+            } else if (metodo === 'PUT') {
+                respuesta = {
+                    metodo: "PUT",
+                    endpoint: "http://localhost:3000/api/empleados/60d0247523be55b04809fa48",
+                    status_code: 200,
+                    status_text: "OK",
+                    fecha: timestamp,
+                    status: "Empleado Actualizado",
+                    cambios_aplicados: {
+                        salary: 4500,
+                        position: "Líder Técnico Senior"
+                    }
+                };
+            } else if (metodo === 'DELETE') {
+                respuesta = {
+                    metodo: "DELETE",
+                    endpoint: "http://localhost:3000/api/empleados/60d2aeaa21a176987f0157489",
+                    status_code: 200,
+                    status_text: "OK",
+                    fecha: timestamp,
+                    status: "Empleado Eliminado"
+                };
+            }
+
+            viewer.textContent = JSON.stringify(respuesta, null, 2);
+            M.toast({ html: `Petición HTTP ${metodo} ejecutada con éxito (Status: 200/201)`, classes: 'teal darken-2' });
+        }
+
+        // Inicializar cuando el DOM cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+            renderTabla();
+        });
+    </script>
+</body>
+</html>

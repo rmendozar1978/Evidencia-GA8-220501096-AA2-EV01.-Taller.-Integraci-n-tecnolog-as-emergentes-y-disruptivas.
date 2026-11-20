@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">EstructuraProyecto</string>
+    <string name="boton1">Botón 1</string>
+    <string name="boton2">Botón 2</string>
+    <string name="click">Hacer Clic</string>
+    <string name="control_de_texto">Control de Texto Android</string>
+    <string name="espa_ol">Español</string>
+    <string name="ingles">Inglés</string>
+    <string name="femenino">Femenino</string>
+    <string name="masculino">Masculino</string>
+
+    <!-- Arreglo de cadenas para Spinner y ListView (Pág 41 PDF 2) -->
+    <string-array name="ciudades">
+        <item>Popayán</item>
+        <item>Cali</item>
+        <item>Bogotá</item>
+        <item>Cartagena</item>
+        <item>Medellín</item>
+        <item>Pasto</item>
+    </string-array>
+</resources>
